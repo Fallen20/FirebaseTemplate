@@ -39,13 +39,22 @@ public class SignInFragment extends AppFragment {
         binding.signInProgressBar.setVisibility(View.GONE);
 
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(requireActivity(), new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(getString(R.string.default_web_client_id))//el toquen para identificar
+                .requestEmail()//lo que pides a google para comparar
                 .build());
 
         firebaseAuthWithGoogle(GoogleSignIn.getLastSignedInAccount(requireContext()));
 
         binding.googleSignIn.setOnClickListener(view1 -> {
             signInClient.launch(googleSignInClient.getSignInIntent());
+        });
+
+
+        binding.goToRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_signInFragment_to_registerFragment);
+            }
         });
 
 
@@ -56,6 +65,7 @@ public class SignInFragment extends AppFragment {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     try {
                         firebaseAuthWithGoogle(GoogleSignIn.getSignedInAccountFromIntent(result.getData()).getResult(ApiException.class));
+                        //autenticar al user en el firebase con los datos que recibe
                     } catch (ApiException e) {}
                 }
             });
@@ -67,7 +77,7 @@ public class SignInFragment extends AppFragment {
         binding.googleSignIn.setVisibility(View.GONE);
 
         FirebaseAuth.getInstance().signInWithCredential(GoogleAuthProvider.getCredential(account.getIdToken(), null))
-                .addOnCompleteListener(requireActivity(), task -> {
+                .addOnCompleteListener(requireActivity(), task -> {//cuando acabe de ponerse en la firebase
                     if (task.isSuccessful()) {
                         navController.navigate(R.id.action_signInFragment_to_postsHomeFragment);
                     } else {

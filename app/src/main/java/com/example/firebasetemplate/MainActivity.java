@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 binding.bottomNavView.setVisibility(View.VISIBLE);
             }
         });
-
+/*
         class Post {
             public String title;
             public String message;
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 53,2,-91,-107,81,85,91,-51,80,-78,2,-20,-50,65,-36,-72,27,-107,-50,-33,30,10,127,89,
                 -65,43,-65,-85,-73,-7,109,-78,-36,-19,110,62,-53,117,111,77,79,-1,-39};
 
-        FirebaseStorage.getInstance().getReference("emoji.jpg").putBytes(bytes);
+        FirebaseStorage.getInstance().getReference("emoji.jpg").putBytes(bytes);*/
 
     }
 
