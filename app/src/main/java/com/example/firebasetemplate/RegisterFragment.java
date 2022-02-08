@@ -36,23 +36,34 @@ public class RegisterFragment extends AppFragment {
         //binding.verifyEmailButton.setOnClickListener(v -> {});
 
         binding.createAccountButton.setOnClickListener(v -> {
-            FirebaseAuth.getInstance()
-                    .createUserWithEmailAndPassword(
-                                        binding.emailEditText.getText().toString(),
-                                        binding.passwordEditText.getText().toString()
-                                    )
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                //si se ha registrado correctamente, logealo
-                                navController.navigate(R.id.action_registerFragment_to_postsHomeFragment);
+            if (binding.emailEditText.getText().toString().isEmpty()) {
+                binding.emailEditText.setError("Este campo no puede estar nulo");
+                return;
+            }//si esta vacio para que no pete
+
+            else if (binding.passwordEditText.getText().toString().isEmpty()) {
+                binding.passwordEditText.setError("Este campo no puede estar nulo");
+                return;
+            }//si esta vacio para que no pete
+            else {
+                FirebaseAuth.getInstance()
+                        .createUserWithEmailAndPassword(
+                                binding.emailEditText.getText().toString(),
+                                binding.passwordEditText.getText().toString()
+                        )
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    //si se ha registrado correctamente, logealo
+                                    navController.navigate(R.id.action_registerFragment_to_postsHomeFragment);
+                                } else {
+                                    Toast.makeText(getContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
-                            else{
-                                Toast.makeText(getContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                        });
+            }
+
 
         });
     }

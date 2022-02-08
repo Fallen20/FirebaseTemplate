@@ -64,21 +64,34 @@ public class SignInFragment extends AppFragment {
         binding.emailSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (binding.email.getText().toString().isEmpty()) {
+                    binding.email.setError("Este campo no puede estar nulo");
+                    return;
+                }//si esta vacio para que no pete
 
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                        binding.email.getText().toString(),
-                        binding.password.getText().toString()
-                ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            navController.navigate(R.id.action_signInFragment_to_postsHomeFragment);
+                else if (binding.password.getText().toString().isEmpty()) {
+                    binding.password.setError("Este campo no puede estar nulo");
+                    return;
+                }//si esta vacio para que no pete
+                else {
+
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(
+                            binding.email.getText().toString(),
+                            binding.password.getText().toString()
+                    ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                navController.navigate(R.id.action_signInFragment_to_postsHomeFragment);
+                            }
+                            else{
+                                Toast.makeText(getContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{
-                            Toast.makeText(getContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
+                }
+
+
             }
         });
 
