@@ -1,5 +1,6 @@
 package com.example.firebasetemplate;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,14 @@ import com.bumptech.glide.Glide;
 import com.example.firebasetemplate.databinding.FragmentNewPostBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 public class NewPostFragment extends AppFragment {
-
+    private Uri uriImagen;
     private FragmentNewPostBinding binding;
 
     @Override
@@ -33,7 +36,8 @@ public class NewPostFragment extends AppFragment {
 
         binding.previsualizacion.setOnClickListener(v -> seleccionarImagen());
 
-        appViewModel.uriImagenSeleccionada.observe(getViewLifecycleOwner(), uri -> {
+        appViewModel.uriImagenSeleccionada.observe(getViewLifecycleOwner(), uri -> {//cuando cambie, la cargas en el imageview
+            uriImagen=uri;
             Glide.with(this).load(uri).into(binding.previsualizacion);
         });
 
@@ -47,18 +51,31 @@ public class NewPostFragment extends AppFragment {
 
                 binding.publicar.setEnabled(false);//ahora no puede volver a apretar para volver a subir
 
-                Posts posts=new Posts(
-                            binding.contenido.getText().toString(),
-                            FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),//si es con email no sirve, solo con google
-                            LocalDate.now().toString()
-                        );
+                //fotos
+                FirebaseStorage.getInstance().getReference("/images/"+ UUID.randomUUID()+".jpg")//la ruta
+                        .putFile(uriImagen)//urimagen es uri, pero como no podemos acceder hacemos una globar que tenga ese contenido
+                        .continueWithTask(task -> task.getResult().getStorage().getDownloadUrl())
+                        .addOnSuccessListener(url->{//solo se ejecuta si sale bien
+
+                            //texto
+                            Posts posts=new Posts(
+                                    binding.contenido.getText().toString(),
+                                    FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),//si es con email no sirve, solo con google
+                                    LocalDate.now().toString(),
+                                    url.toString()
+                            );
 
 
-                FirebaseFirestore.getInstance().collection("posts").add(posts)
-                                .addOnCompleteListener(task->{
-                                    binding.publicar.setEnabled(true);//que no se vuelve a activar hasta que se suba a la base de datos
-                                    navController.popBackStack();//y que vuelva atras
-                                });//add es una fila
+                            FirebaseFirestore.getInstance().collection("posts").add(posts)
+                                    .addOnCompleteListener(task->{
+                                        binding.publicar.setEnabled(true);//que no se vuelve a activar hasta que se suba a la base de datos
+                                        navController.popBackStack();//y que vuelva atras
+                                    });//add es una fila
+
+
+                        });
+                //no se pueden llamar igual o sino se sobrescribe t odo el rato, asi que le damos un numero solo random
+
 
 
             }
@@ -66,10 +83,10 @@ public class NewPostFragment extends AppFragment {
     }
 
     private void seleccionarImagen() {
-        galeria.launch("image/*");
+        galeria.launch("image/*");//abre la libreria
     }
 
     private final ActivityResultLauncher<String> galeria = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-        appViewModel.setUriImagenSeleccionada(uri);
+        appViewModel.setUriImagenSeleccionada(uri);//le pasas la uri de la foto (direccion)
     });
 }

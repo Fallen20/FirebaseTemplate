@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.firebasetemplate.databinding.ViewholderPostBinding;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
@@ -37,6 +38,7 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
     public void onBindViewHolder(@NonNull AdapterRecyclerHome.MyViewHolder holder, int position) {
         holder.binding.autor.setText(postsList.get(position).getAuthorName());
         holder.binding.contenido.setText(postsList.get(position).getContent());
+        Glide.with(context).load(postsList.get(position).getUrlDescarga()).into(holder.binding.imagen);//igual que picaso
     }
 
     @Override

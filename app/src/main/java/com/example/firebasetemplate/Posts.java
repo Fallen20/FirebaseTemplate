@@ -5,12 +5,23 @@ public class Posts {
     private String content;
     private String authorName;
     private String datePost;
+    private String urlDescarga;
 
     public Posts(){}
-    public Posts(String content, String authorName, String datePost) {
+
+    public Posts(String content, String authorName, String datePost, String urlDescarga) {
         this.content = content;
         this.authorName = authorName;
         this.datePost = datePost;
+        this.urlDescarga = urlDescarga;
+    }
+
+    public String getUrlDescarga() {
+        return urlDescarga;
+    }
+
+    public void setUrlDescarga(String urlDescarga) {
+        this.urlDescarga = urlDescarga;
     }
 
     public String getContent() {
