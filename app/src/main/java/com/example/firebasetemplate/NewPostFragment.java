@@ -18,7 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 public class NewPostFragment extends AppFragment {
@@ -60,7 +59,8 @@ public class NewPostFragment extends AppFragment {
                             //texto
                             Posts posts=new Posts(
                                     binding.contenido.getText().toString(),
-                                    FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),//si es con email no sirve, solo con google
+                                    FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),//si es con displayName no sirve con email, solo con google
+                                    FirebaseAuth.getInstance().getCurrentUser().getEmail(),
                                     LocalDate.now().toString(),
                                     url.toString()
                             );

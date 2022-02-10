@@ -1,7 +1,10 @@
 package com.example.firebasetemplate;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.firebasetemplate.databinding.FragmentRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,10 +23,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.UUID;
 
 
 public class RegisterFragment extends AppFragment {
     private FragmentRegisterBinding binding;
+    private Uri uriImagen;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,6 +44,13 @@ public class RegisterFragment extends AppFragment {
 
         //binding.verifyEmailButton.setOnClickListener(v -> {});
 
+        binding.previsualizacionIcono.setOnClickListener(v -> seleccionarImagen());
+
+        appViewModel.uriImagenSeleccionada.observe(getViewLifecycleOwner(), uri -> {//cuando cambie, la cargas en el imageview
+            uriImagen=uri;
+            Glide.with(this).load(uri).into(binding.previsualizacionIcono);
+        });
+
         binding.createAccountButton.setOnClickListener(v -> {
             if (binding.emailEditText.getText().toString().isEmpty()) {
                 binding.emailEditText.setError("Este campo no puede estar nulo");
@@ -45,9 +61,11 @@ public class RegisterFragment extends AppFragment {
                 binding.passwordEditText.setError("Este campo no puede estar nulo");
                 return;
             }//si esta vacio para que no pete
+            else if(binding.usernameEditText.getText().toString().isEmpty()){
+                binding.usernameEditText.setError("Este campo no puede estar nulo");
+            }
             else {
-                FirebaseAuth.getInstance()
-                        .createUserWithEmailAndPassword(
+                auth.createUserWithEmailAndPassword(
                                 binding.emailEditText.getText().toString(),
                                 binding.passwordEditText.getText().toString()
                         )
@@ -56,7 +74,27 @@ public class RegisterFragment extends AppFragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     //si se ha registrado correctamente, logealo
-                                    navController.navigate(R.id.action_registerFragment_to_postsHomeFragment);
+
+                                    FirebaseStorage.getInstance().getReference("/iconos/"+ UUID.randomUUID()+".jpg")
+                                            .putFile(uriImagen)
+                                            .continueWithTask(task2 -> task2.getResult().getStorage().getDownloadUrl())
+                                            .addOnSuccessListener(url->{
+                                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                        .setDisplayName(binding.usernameEditText.getText().toString())
+                                                        .setPhotoUri(uriImagen)
+                                                        .build();
+
+                                                user.updateProfile(profileUpdates);
+
+
+
+                                                navController.navigate(R.id.action_registerFragment_to_postsHomeFragment);
+                                            });
+
+
+
                                 } else {
                                     Toast.makeText(getContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                 }
@@ -67,4 +105,12 @@ public class RegisterFragment extends AppFragment {
 
         });
     }
+
+    private void seleccionarImagen() {
+        galeria.launch("image/*");//abre la libreria
+    }
+
+    private final ActivityResultLauncher<String> galeria = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+        appViewModel.setUriImagenSeleccionada(uri);//le pasas la uri de la foto (direccion)
+    });
 }

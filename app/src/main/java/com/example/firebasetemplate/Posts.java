@@ -4,14 +4,34 @@ public class Posts {
 
     private String content;
     private String authorName;
+    private String authorEmail;
     private String datePost;
     private String urlDescarga;
+    private String authorIcono;
 
-    public Posts(){}
+    public Posts(){
+    }
 
-    public Posts(String content, String authorName, String datePost, String urlDescarga) {
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
+    }
+
+    public String getAuthorIcono() {
+        return authorIcono;
+    }
+
+    public void setAuthorIcono(String authorIcono) {
+        this.authorIcono = authorIcono;
+    }
+
+    public Posts(String content, String authorName, String authorPhoto, String datePost, String urlDescarga) {
         this.content = content;
         this.authorName = authorName;
+        this.authorEmail = authorPhoto;
         this.datePost = datePost;
         this.urlDescarga = urlDescarga;
     }

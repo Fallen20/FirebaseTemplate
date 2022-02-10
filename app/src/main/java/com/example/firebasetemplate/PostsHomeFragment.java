@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.example.firebasetemplate.databinding.FragmentPostsBinding;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +39,18 @@ public class PostsHomeFragment extends AppFragment {
         //cuando se inicie la pantalla, que mire la base de datosy los muestre
         //que coleccion? post. Y de cada uno, todos los datos. get() solo mira los post una vez
         //con addSnapshotListener lo mira a tiempo real
-        db.collection("posts")
-                        .addSnapshotListener((collectionSnapshot, e)->{
-                            //convertir cada documento en clase posts para mostrarlos con ese formato
+        setQuery().addSnapshotListener((collectionSnapshot, e)->{
+                            postsArrayList.clear();//sino se duplica
                             for(DocumentSnapshot a:collectionSnapshot){
-                               // a.toObject(Posts.class);//lo pasas a esa clase
+                               // a.toObject(Posts.class);//convertir cada documento en clase posts para mostrarlos con ese formato
                                 postsArrayList.add(a.toObject(Posts.class));//añadir para el recycler
                             }
                             adapterRecyclerHome.notifyDataSetChanged();//esto es que notifica que ha cambiado y se vuelve a ejecutar
                         });
 
+    }
+
+    Query setQuery(){
+        return db.collection("posts");
     }
 }

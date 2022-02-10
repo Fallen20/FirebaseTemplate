@@ -36,9 +36,18 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
 
     @Override
     public void onBindViewHolder(@NonNull AdapterRecyclerHome.MyViewHolder holder, int position) {
-        holder.binding.autor.setText(postsList.get(position).getAuthorName());
-        holder.binding.contenido.setText(postsList.get(position).getContent());
-        Glide.with(context).load(postsList.get(position).getUrlDescarga()).into(holder.binding.imagen);//igual que picaso
+        Posts post = postsList.get(position);
+        holder.binding.autor.setText(post.getAuthorName());
+        holder.binding.contenido.setText(post.getContent());
+        Glide.with(context).load(post.getUrlDescarga()).into(holder.binding.imagen);//igual que picaso
+
+        if(post.getAuthorIcono() != null && !post.getAuthorIcono().isEmpty()){
+            Glide.with(context).load(postsList.get(position).getAuthorIcono()).into(holder.binding.autorFoto);
+        }
+        else{
+            holder.binding.autorFoto.setImageResource(R.drawable.ic_baseline_face_24);
+        }
+
     }
 
     @Override
