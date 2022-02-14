@@ -61,7 +61,7 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
                 FirebaseFirestore.getInstance().collection("posts")
                         .document(postsList.get(holder.getAdapterPosition()).getId())//recuperas el id
                         .update("likes."+ FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                                postsList.get(holder.getAdapterPosition()).getLikes().containsKey(auth.getUid()) ? true : FieldValue.delete());//campo a actualizar y con que valor
+                                !postsList.get(holder.getAdapterPosition()).getLikes().containsKey(auth.getUid()) ? true : FieldValue.delete());//campo a actualizar y con que valor
                 //si el hashmpa no tiene ese like, se lo pones.
                 //sino lo tiene, lo eliminas del hashmap
             }

@@ -15,7 +15,7 @@ public class Posts {
     private String urlDescarga;
     private String authorIcono;
 
-    public HashMap<String, Boolean> likes; //el usuario y si le ha hecho fav al post
+    private HashMap<String, Boolean> likes=new HashMap<>(); //el usuario y si le ha hecho fav al post
 
     public Posts(){
     }
@@ -27,6 +27,7 @@ public class Posts {
         this.datePost = datePost;
         this.urlDescarga = urlDescarga;
         this.authorIcono = authorIcono;
+        this.likes=new HashMap<>();
     }
 
     public Posts(String content, String authorName, String authorPhoto, String datePost, String urlDescarga) {
@@ -35,6 +36,7 @@ public class Posts {
         this.authorEmail = authorPhoto;
         this.datePost = datePost;
         this.urlDescarga = urlDescarga;
+        this.likes=new HashMap<>();
     }
 
     public Posts(String content, String authorName, String authorPhoto, String datePost) {
@@ -42,6 +44,7 @@ public class Posts {
         this.authorName = authorName;
         this.authorEmail = authorPhoto;
         this.datePost = datePost;
+        this.likes=new HashMap<>();
     }
 
     public String getAuthorEmail() {
