@@ -33,11 +33,14 @@ public class NewPostFragment extends AppFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        appViewModel.setUriImagenSeleccionada(null);
         binding.previsualizacion.setOnClickListener(v -> seleccionarImagen());
 
         appViewModel.uriImagenSeleccionada.observe(getViewLifecycleOwner(), uri -> {//cuando cambie, la cargas en el imageview
-            uriImagen = uri;
-            Glide.with(this).load(uri).into(binding.previsualizacion);
+           if(uri!=null){
+               uriImagen = uri;
+               Glide.with(this).load(uri).into(binding.previsualizacion);
+           }
         });
 
         binding.publicar.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +74,7 @@ public class NewPostFragment extends AppFragment {
                                 FirebaseFirestore.getInstance().collection("posts").add(posts)
                                         .addOnCompleteListener(task -> {
                                             binding.publicar.setEnabled(true);//que no se vuelve a activar hasta que se suba a la base de datos
+                                            appViewModel.setUriImagenSeleccionada(null);
                                             navController.popBackStack();//y que vuelva atras
                                         });//add es una fila
 
@@ -90,12 +94,15 @@ public class NewPostFragment extends AppFragment {
                     FirebaseFirestore.getInstance().collection("posts").add(posts)
                             .addOnCompleteListener(task -> {
                                 binding.publicar.setEnabled(true);//que no se vuelve a activar hasta que se suba a la base de datos
+                                appViewModel.setUriImagenSeleccionada(null);
                                 navController.popBackStack();//y que vuelva atras
                             });//add es una fila
 
 
 
             }
+
+                //cuando acabas, quitas la foto
 
             //no se pueden llamar igual o sino se sobrescribe t odo el rato, asi que le damos un numero solo random
 
@@ -109,6 +116,7 @@ public class NewPostFragment extends AppFragment {
     }
 
     private final ActivityResultLauncher<String> galeria = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+        //si le pones aqui uriUmagen=uri, al girar el movil has de volver a seleccionarla
         appViewModel.setUriImagenSeleccionada(uri);//le pasas la uri de la foto (direccion)
     });
 }

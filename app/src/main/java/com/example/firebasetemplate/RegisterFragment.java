@@ -44,11 +44,14 @@ public class RegisterFragment extends AppFragment {
 
         //binding.verifyEmailButton.setOnClickListener(v -> {});
 
+
         binding.previsualizacionIcono.setOnClickListener(v -> seleccionarImagen());
 
         appViewModel.uriImagenSeleccionada.observe(getViewLifecycleOwner(), uri -> {//cuando cambie, la cargas en el imageview
-            uriImagen=uri;
-            Glide.with(this).load(uri).into(binding.previsualizacionIcono);
+            if(uri!=null){
+                uriImagen=uri;
+                Glide.with(this).load(uri).into(binding.previsualizacionIcono);
+            }
         });
 
         binding.createAccountButton.setOnClickListener(v -> {
@@ -103,8 +106,11 @@ public class RegisterFragment extends AppFragment {
                                                             .build();
 
                                                     user.updateProfile(profileUpdates);
+
+
                                                 });
                                     }
+
                                     navController.navigate(R.id.action_registerFragment_to_postsHomeFragment);
 
 
@@ -119,6 +125,7 @@ public class RegisterFragment extends AppFragment {
 
 
         });
+
     }
 
     private void seleccionarImagen() {
