@@ -1,6 +1,12 @@
 package com.example.firebasetemplate;
 
+import java.util.HashMap;
+
 public class Posts {
+
+    private String id;
+
+
 
     private String content;
     private String authorName;
@@ -9,13 +15,53 @@ public class Posts {
     private String urlDescarga;
     private String authorIcono;
 
+    public HashMap<String, Boolean> likes; //el usuario y si le ha hecho fav al post
+
     public Posts(){
+    }
+
+    public Posts(String content, String authorName, String authorEmail, String datePost, String urlDescarga, String authorIcono) {
+        this.content = content;
+        this.authorName = authorName;
+        this.authorEmail = authorEmail;
+        this.datePost = datePost;
+        this.urlDescarga = urlDescarga;
+        this.authorIcono = authorIcono;
+    }
+
+    public Posts(String content, String authorName, String authorPhoto, String datePost, String urlDescarga) {
+        this.content = content;
+        this.authorName = authorName;
+        this.authorEmail = authorPhoto;
+        this.datePost = datePost;
+        this.urlDescarga = urlDescarga;
+    }
+
+    public Posts(String content, String authorName, String authorPhoto, String datePost) {
+        this.content = content;
+        this.authorName = authorName;
+        this.authorEmail = authorPhoto;
+        this.datePost = datePost;
     }
 
     public String getAuthorEmail() {
         return authorEmail;
     }
 
+    public HashMap<String, Boolean> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(HashMap<String, Boolean> likes) {
+        this.likes = likes;
+    }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
     public void setAuthorEmail(String authorEmail) {
         this.authorEmail = authorEmail;
     }
@@ -26,14 +72,6 @@ public class Posts {
 
     public void setAuthorIcono(String authorIcono) {
         this.authorIcono = authorIcono;
-    }
-
-    public Posts(String content, String authorName, String authorPhoto, String datePost, String urlDescarga) {
-        this.content = content;
-        this.authorName = authorName;
-        this.authorEmail = authorPhoto;
-        this.datePost = datePost;
-        this.urlDescarga = urlDescarga;
     }
 
     public String getUrlDescarga() {

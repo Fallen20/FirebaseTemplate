@@ -43,7 +43,10 @@ public class PostsHomeFragment extends AppFragment {
                             postsArrayList.clear();//sino se duplica
                             for(DocumentSnapshot a:collectionSnapshot){
                                // a.toObject(Posts.class);//convertir cada documento en clase posts para mostrarlos con ese formato
-                                postsArrayList.add(a.toObject(Posts.class));//añadir para el recycler
+                                Posts posts=a.toObject(Posts.class);
+                                posts.setId(a.getId());
+
+                                postsArrayList.add(posts);//añadir para el recycler
                             }
                             adapterRecyclerHome.notifyDataSetChanged();//esto es que notifica que ha cambiado y se vuelve a ejecutar
                         });

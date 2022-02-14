@@ -66,32 +66,47 @@ public class RegisterFragment extends AppFragment {
             }
             else {
                 auth.createUserWithEmailAndPassword(
-                                binding.emailEditText.getText().toString(),
-                                binding.passwordEditText.getText().toString()
-                        )
+                        binding.emailEditText.getText().toString(),
+                        binding.passwordEditText.getText().toString()
+                )
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     //si se ha registrado correctamente, logealo
 
-                                    FirebaseStorage.getInstance().getReference("/iconos/"+ UUID.randomUUID()+".jpg")
-                                            .putFile(uriImagen)
-                                            .continueWithTask(task2 -> task2.getResult().getStorage().getDownloadUrl())
-                                            .addOnSuccessListener(url->{
-                                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    //mira si ha puesto foto
+                                    if(uriImagen==null){
 
-                                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                        .setDisplayName(binding.usernameEditText.getText().toString())
-                                                        .setPhotoUri(uriImagen)
-                                                        .build();
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                                                user.updateProfile(profileUpdates);
+                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(binding.usernameEditText.getText().toString())
+                                                .build();
+
+                                        user.updateProfile(profileUpdates);
 
 
 
-                                                navController.navigate(R.id.action_registerFragment_to_postsHomeFragment);
-                                            });
+                                    }
+                                    else{
+
+                                        FirebaseStorage.getInstance().getReference("/iconos/"+ UUID.randomUUID()+".jpg")
+                                                .putFile(uriImagen)
+                                                .continueWithTask(task2 -> task2.getResult().getStorage().getDownloadUrl())
+                                                .addOnSuccessListener(url->{
+                                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                            .setDisplayName(binding.usernameEditText.getText().toString())
+                                                            .setPhotoUri(uriImagen)
+                                                            .build();
+
+                                                    user.updateProfile(profileUpdates);
+                                                });
+                                    }
+                                    navController.navigate(R.id.action_registerFragment_to_postsHomeFragment);
+
 
 
 
