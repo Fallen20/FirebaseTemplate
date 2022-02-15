@@ -20,7 +20,7 @@ public class Posts {
     public Posts(){
     }
 
-    public Posts(String content, String authorName, String authorEmail, String datePost, String urlDescarga, String authorIcono) {
+    public Posts(String content, String authorName, String authorEmail, String datePost, String urlDescarga, String authorIcono) {//usuario con foto
         this.content = content;
         this.authorName = authorName;
         this.authorEmail = authorEmail;
@@ -30,7 +30,7 @@ public class Posts {
         this.likes=new HashMap<>();
     }
 
-    public Posts(String content, String authorName, String authorPhoto, String datePost, String urlDescarga) {
+    public Posts(String content, String authorName, String authorPhoto, String datePost, String urlDescarga) {//usuario sin foto
         this.content = content;
         this.authorName = authorName;
         this.authorEmail = authorPhoto;
@@ -39,7 +39,8 @@ public class Posts {
         this.likes=new HashMap<>();
     }
 
-    public Posts(String content, String authorName, String authorPhoto, String datePost) {
+
+    public Posts(String content, String authorName, String authorPhoto, String datePost) {//usuario con foto sin fotos en el post
         this.content = content;
         this.authorName = authorName;
         this.authorEmail = authorPhoto;

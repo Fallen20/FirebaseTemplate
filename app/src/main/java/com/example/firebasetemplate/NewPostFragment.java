@@ -60,14 +60,20 @@ public class NewPostFragment extends AppFragment {
                             .continueWithTask(task -> task.getResult().getStorage().getDownloadUrl())
                             .addOnSuccessListener(url -> {//solo se ejecuta si sale bien
 
-                                //texto+img
+                                String photo = null;
+                                if(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()!=null){//si tiene foto de perfil
+                                    //texto+img
+                                    photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+                                }
+
+
                                 Posts posts = new Posts(
                                         binding.contenido.getText().toString(),
                                         FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),//si es con displayName no sirve con email, solo con google
                                         FirebaseAuth.getInstance().getCurrentUser().getEmail(),
                                         LocalDate.now().toString(),
                                         url.toString(),
-                                        FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString()
+                                        photo
                                 );
 
 
@@ -80,14 +86,22 @@ public class NewPostFragment extends AppFragment {
 
 
                             });
-                } else {//no tiene fotos
+                } else {//no tiene fotos en el post
 
                     //texto
+
+                    String photo = null;
+                    if(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()!=null){//si tiene foto de perfil
+                        //texto+img
+                        photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+                    }
+
                     Posts posts = new Posts(
                             binding.contenido.getText().toString(),
                             FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),//si es con displayName no sirve con email, solo con google
                             FirebaseAuth.getInstance().getCurrentUser().getEmail(),
-                            LocalDate.now().toString()
+                            LocalDate.now().toString(),
+                            photo
                     );
 
 

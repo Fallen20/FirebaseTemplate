@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:hint="Email"
+            android:inputType="textWebEmailAddress"
             android:minHeight="48dp" />
 
         <EditText
@@ -41,7 +42,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:hint="Password"
-            android:minHeight="48dp" />
+            android:inputType="textPassword|textWebPassword"
+            android:minHeight="48dp"
+            android:password="true" />
 
         <ImageView
             android:id="@+id/previsualizacionIcono"
