@@ -18,35 +18,14 @@ public class Posts {
     private HashMap<String, Boolean> likes=new HashMap<>(); //el usuario y si le ha hecho fav al post
 
     public Posts(){
+        this.content=null;
+        this.authorName=null;
+        this.authorEmail=null;
+        this.datePost=null;
+        this.urlDescarga=null;
+        this.authorIcono=null;
     }
 
-    public Posts(String content, String authorName, String authorEmail, String datePost, String urlDescarga, String authorIcono) {//usuario con foto
-        this.content = content;
-        this.authorName = authorName;
-        this.authorEmail = authorEmail;
-        this.datePost = datePost;
-        this.urlDescarga = urlDescarga;
-        this.authorIcono = authorIcono;
-        this.likes=new HashMap<>();
-    }
-
-    public Posts(String content, String authorName, String authorPhoto, String datePost, String urlDescarga) {//usuario sin foto
-        this.content = content;
-        this.authorName = authorName;
-        this.authorEmail = authorPhoto;
-        this.datePost = datePost;
-        this.urlDescarga = urlDescarga;
-        this.likes=new HashMap<>();
-    }
-
-
-    public Posts(String content, String authorName, String authorPhoto, String datePost) {//usuario con foto sin fotos en el post
-        this.content = content;
-        this.authorName = authorName;
-        this.authorEmail = authorPhoto;
-        this.datePost = datePost;
-        this.likes=new HashMap<>();
-    }
 
     public String getAuthorEmail() {
         return authorEmail;

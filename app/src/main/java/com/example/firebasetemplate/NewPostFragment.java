@@ -67,17 +67,18 @@ public class NewPostFragment extends AppFragment {
                                 }
 
 
-                                Posts posts = new Posts(
-                                        binding.contenido.getText().toString(),
-                                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),//si es con displayName no sirve con email, solo con google
-                                        FirebaseAuth.getInstance().getCurrentUser().getEmail(),
-                                        LocalDate.now().toString(),
-                                        url.toString(),
-                                        photo
-                                );
+                                Posts post=new Posts();
+                                post.setContent( binding.contenido.getText().toString());
+                                post.setAuthorName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                                post.setAuthorEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                                post.setDatePost(LocalDate.now().toString());
+                                post.setUrlDescarga(url.toString());
+                                post.setAuthorIcono(photo);
 
 
-                                FirebaseFirestore.getInstance().collection("posts").add(posts)
+
+
+                                FirebaseFirestore.getInstance().collection("posts").add(post)
                                         .addOnCompleteListener(task -> {
                                             binding.publicar.setEnabled(true);//que no se vuelve a activar hasta que se suba a la base de datos
                                             appViewModel.setUriImagenSeleccionada(null);
@@ -96,16 +97,16 @@ public class NewPostFragment extends AppFragment {
                         photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
                     }
 
-                    Posts posts = new Posts(
-                            binding.contenido.getText().toString(),
-                            FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),//si es con displayName no sirve con email, solo con google
-                            FirebaseAuth.getInstance().getCurrentUser().getEmail(),
-                            LocalDate.now().toString(),
-                            photo
-                    );
+                    Posts post=new Posts();
+                    post.setContent( binding.contenido.getText().toString());
+                    post.setAuthorName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                    post.setAuthorEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    post.setDatePost(LocalDate.now().toString());
+                    post.setAuthorIcono(photo);
 
 
-                    FirebaseFirestore.getInstance().collection("posts").add(posts)
+
+                    FirebaseFirestore.getInstance().collection("posts").add(post)
                             .addOnCompleteListener(task -> {
                                 binding.publicar.setEnabled(true);//que no se vuelve a activar hasta que se suba a la base de datos
                                 appViewModel.setUriImagenSeleccionada(null);
