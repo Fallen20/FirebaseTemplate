@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.firebasetemplate.databinding.FragmentPostsBinding;
 import com.example.firebasetemplate.databinding.FragmentProfileBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class ProfileFragment extends AppFragment {
@@ -20,11 +22,24 @@ public class ProfileFragment extends AppFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return (binding = FragmentProfileBinding.inflate(inflater, container, false)).getRoot();
+
+
+
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()!=null){
+            Glide.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).circleCrop().into(binding.imagenPerfil);
+        }
+        else{
+            binding.imagenPerfil.setImageResource(R.drawable.ic_baseline_face_24);
+        }
+        binding.nombrePerfil.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        binding.emailPerfil.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
     }
 }
