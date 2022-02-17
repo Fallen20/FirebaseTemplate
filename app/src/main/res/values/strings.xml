@@ -3,6 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="perfilPalabra">Perfil</string>
+    <string name="enterInfo">Enter this information to create your account</string>
     <string name="goRegister">Don\'t have an account? Register.</string>
     <string name="proceed">Enter your email to proceed</string>
     <string name="welcome">Welcome to FirebaseTemplate password application</string>
