@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 if(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()!=null){
                     Glide.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).circleCrop().into(navHeaderMainBinding.headerImg);
-                }
+                }//poner la imagen en el cajon
                 else{
+                   // Glide.with(this).load(R.drawable.ic_baseline_face_24).circleCrop().into(navHeaderMainBinding.headerImg);
                     navHeaderMainBinding.headerImg.setImageResource(R.drawable.ic_baseline_face_24);
                 }
                 navHeaderMainBinding.headerTitle.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());

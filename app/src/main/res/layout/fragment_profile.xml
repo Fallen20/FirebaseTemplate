@@ -50,6 +50,67 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <ProgressBar
+            android:id="@+id/CantidadProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/emailPerfil"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/relativeCantidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/emailPerfil"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/cantidadTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/cantidadPost"
+                android:textColor="#14293C"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/postsNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/cantidadTxt"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/cantidadfavsTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cantidadTxt"
+                android:layout_marginLeft="110dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/cantidadFavs"
+                android:textColor="#14293C"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/favsNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cantidadTxt"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/cantidadfavsTxt"
+                android:text="TextView" />
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </FrameLayout>
