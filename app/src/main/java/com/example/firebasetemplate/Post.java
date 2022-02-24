@@ -2,7 +2,7 @@ package com.example.firebasetemplate;
 
 import java.util.HashMap;
 
-public class Posts {
+public class Post {
 
     private String id;
 
@@ -12,17 +12,17 @@ public class Posts {
     private String authorName;
     private String authorEmail;
     private String datePost;
-    private String urlDescarga;
+    private String urlImagenPost;
     private String authorIcono;
 
     private HashMap<String, Boolean> likes=new HashMap<>(); //el usuario y si le ha hecho fav al post
 
-    public Posts(){
+    public Post(){
         this.content=null;
         this.authorName=null;
         this.authorEmail=null;
         this.datePost=null;
-        this.urlDescarga=null;
+        this.urlImagenPost =null;
         this.authorIcono=null;
     }
 
@@ -57,12 +57,12 @@ public class Posts {
         this.authorIcono = authorIcono;
     }
 
-    public String getUrlDescarga() {
-        return urlDescarga;
+    public String getUrlImagenPost() {
+        return urlImagenPost;
     }
 
-    public void setUrlDescarga(String urlDescarga) {
-        this.urlDescarga = urlDescarga;
+    public void setUrlImagenPost(String urlImagenPost) {
+        this.urlImagenPost = urlImagenPost;
     }
 
     public String getContent() {

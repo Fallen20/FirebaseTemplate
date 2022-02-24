@@ -67,12 +67,12 @@ public class NewPostFragment extends AppFragment {
                                 }
 
 
-                                Posts post=new Posts();
+                                Post post=new Post();
                                 post.setContent( binding.contenido.getText().toString());
                                 post.setAuthorName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                                 post.setAuthorEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
                                 post.setDatePost(LocalDate.now().toString());
-                                post.setUrlDescarga(url.toString());
+                                post.setUrlImagenPost(url.toString());
                                 post.setAuthorIcono(photo);
 
 
@@ -97,7 +97,7 @@ public class NewPostFragment extends AppFragment {
                         photo = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
                     }
 
-                    Posts post=new Posts();
+                    Post post=new Post();
                     post.setContent( binding.contenido.getText().toString());
                     post.setAuthorName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                     post.setAuthorEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());

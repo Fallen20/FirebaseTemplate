@@ -28,4 +28,5 @@ public abstract class AppFragment extends Fragment {
         db= FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
     }
+
 }

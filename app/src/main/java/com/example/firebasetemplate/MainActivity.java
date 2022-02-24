@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if(destination.getId() == R.id.signInFragment) {
+            if(destination.getId() == R.id.signInFragment || destination.getId()==R.id.registerFragment) {
                 binding.toolbar.setVisibility(View.GONE);
                 binding.bottomNavView.setVisibility(View.GONE);
             } else {

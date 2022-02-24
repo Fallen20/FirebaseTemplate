@@ -19,7 +19,7 @@ public class PostsHomeFragment extends AppFragment {
 
     private FragmentPostsBinding binding;
 
-    private List<Posts> postsArrayList=new ArrayList<>();
+    private List<Post> postArrayList =new ArrayList<>();
     private AdapterRecyclerHome adapterRecyclerHome;
 
     @Override
@@ -32,7 +32,7 @@ public class PostsHomeFragment extends AppFragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.fab.setOnClickListener(v -> navController.navigate(R.id.newPostFragment));
-        adapterRecyclerHome=new AdapterRecyclerHome(requireContext(), postsArrayList);
+        adapterRecyclerHome=new AdapterRecyclerHome(requireContext(), navController, postArrayList);
 
         binding.postsRecyclerView.setAdapter(adapterRecyclerHome);//al principio estara vacio porque se llena abajo, pero al cabo de unos segundos se llena
 
@@ -40,16 +40,19 @@ public class PostsHomeFragment extends AppFragment {
         //que coleccion? post. Y de cada uno, todos los datos. get() solo mira los post una vez
         //con addSnapshotListener lo mira a tiempo real
         setQuery().addSnapshotListener((collectionSnapshot, e)->{
-                            postsArrayList.clear();//sino se duplica
+                            postArrayList.clear();//sino se duplica
                             for(DocumentSnapshot a:collectionSnapshot){
                                // a.toObject(Posts.class);//convertir cada documento en clase posts para mostrarlos con ese formato
-                                Posts posts=a.toObject(Posts.class);
-                                posts.setId(a.getId());
+                                Post post =a.toObject(Post.class);
+                                post.setId(a.getId());
 
-                                postsArrayList.add(posts);//añadir para el recycler
+                                postArrayList.add(post);//añadir para el recycler
                             }
                             adapterRecyclerHome.notifyDataSetChanged();//esto es que notifica que ha cambiado y se vuelve a ejecutar
                         });
+
+
+
 
     }
 

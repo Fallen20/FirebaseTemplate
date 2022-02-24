@@ -59,13 +59,19 @@
             android:label="Home"
             tools:layout="@layout/fragment_posts">
 
+            <action
+                android:id="@+id/action_postsHomeFragment_to_detailFragment"
+                app:destination="@id/detailFragment" />
         </fragment>
         <fragment
             android:id="@+id/postsMyFragment"
             android:name="com.example.firebasetemplate.PostsMyFragment"
-            android:label="My posts"
+            android:label="My post"
             tools:layout="@layout/fragment_posts">
 
+            <action
+                android:id="@+id/action_postsMyFragment_to_detailFragment"
+                app:destination="@id/detailFragment" />
         </fragment>
         <fragment
             android:id="@+id/postsLikeFragment"
@@ -73,6 +79,22 @@
             android:label="Likes"
             tools:layout="@layout/fragment_posts">
 
+
         </fragment>
+
+        <fragment
+            android:id="@+id/detailFragment"
+            android:name="com.example.firebasetemplate.DetailPostFragment"
+            android:label="Detailes post"
+            tools:layout="@layout/fragment_detail_post">
+            <argument
+                android:name="postid"
+                app:argType="string"
+                android:defaultValue="abcd" />
+
+        </fragment>
+        <action
+            android:id="@+id/action_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </navigation>
 </navigation>
