@@ -4,9 +4,11 @@ package com.example.firebasetemplate;
 import static com.example.firebasetemplate.NavigationDirections.*;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -47,6 +49,7 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
         holder.binding.autor.setText(post.getAuthorName());
         holder.binding.contenido.setText(post.getContent());
 
+        //foto post
         if(post.getUrlImagenPost()!=null){
             Glide.with(context).load(post.getUrlImagenPost()).into(holder.binding.imagen);//igual que picaso
             holder.binding.imagen.setVisibility(View.VISIBLE);
@@ -55,6 +58,7 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
             holder.binding.imagen.setVisibility(View.GONE);
         }
 
+        //icono
         if(post.getAuthorIcono() != null && !post.getAuthorIcono().isEmpty()){
             Glide.with(context).load(postList.get(position).getAuthorIcono()).into(holder.binding.autorFoto);
         }
@@ -62,6 +66,32 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
             holder.binding.autorFoto.setImageResource(R.drawable.ic_baseline_face_24);
         }
 
+        holder.binding.autorFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "foto", Toast.LENGTH_SHORT).show();
+                //navigate al profile con los datos son los de este usuario
+
+
+                //no encuentra esto
+                /*ActionToProfileFragment action2 = actionToProfileFragment();
+
+                //pasar datos
+                action2.setUseremail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                action2.setUsername(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                action2.setUseruuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                if (FirebaseAuth.getInstance().getCurrentUser().getEmail()!=null){
+                    action2.setUserphoto(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                }
+
+                navController.navigate(action);
+*/
+            }
+        });
+
+
+        //favs
         holder.binding.favorito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +112,7 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
             holder.binding.favorito.setChecked(postList.get(position).getLikes().containsKey(FirebaseAuth.getInstance().getUid()));
         }
 
+        //fondo
         holder.binding.cardViewholder.setOnClickListener(v -> {
             //aqui se ha de hacer que pueda venir de otras actividades
 

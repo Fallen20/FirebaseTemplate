@@ -18,7 +18,8 @@ import com.example.firebasetemplate.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.storage.FirebaseStorage;import com.example.firebasetemplate.databinding.NavHeaderMainBinding;
+import com.google.firebase.storage.FirebaseStorage;
+import com.example.firebasetemplate.databinding.NavHeaderMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;

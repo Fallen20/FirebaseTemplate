@@ -22,7 +22,30 @@
         android:name="com.example.firebasetemplate.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" >
+
+        <argument
+            android:name="userphoto"
+            app:argType="string"
+            android:defaultValue="abcd"/>
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="abcd" />
+        <argument
+            android:name="useremail"
+            app:argType="string"
+            android:defaultValue="abcd" />
+        <argument
+            android:name="useruuid"
+            app:argType="string"
+            android:defaultValue="abcd" />
+
+
     </fragment>
+    <action
+        android:id="@+id/action_to_profileFragment"
+        app:destination="@+id/profileFragment"/>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.firebasetemplate.RegisterFragment"

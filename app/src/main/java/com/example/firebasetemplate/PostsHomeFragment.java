@@ -51,8 +51,7 @@ public class PostsHomeFragment extends AppFragment {
                             adapterRecyclerHome.notifyDataSetChanged();//esto es que notifica que ha cambiado y se vuelve a ejecutar
                         });
 
-
-
+        
 
     }
 

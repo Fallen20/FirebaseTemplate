@@ -23,6 +23,11 @@ public class ProfileFragment extends AppFragment {
     public static int cantidadFavs = 0;
     private boolean post, fav;
 
+    String username;
+    String usermail;
+    String userphoto;
+    String useruid;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return (binding = FragmentProfileBinding.inflate(inflater, container, false)).getRoot();
@@ -32,19 +37,25 @@ public class ProfileFragment extends AppFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        username=ProfileFragmentArgs.fromBundle(getArguments()).getUsername();
+        usermail=ProfileFragmentArgs.fromBundle(getArguments()).getUseremail();
+        userphoto=ProfileFragmentArgs.fromBundle(getArguments()).getUserphoto();
+        useruid=ProfileFragmentArgs.fromBundle(getArguments()).getUseruuid();
+
+
         //System.out.println("accendiento a los metodos desde el onview");
         getCantidad();
 
 
         //cargar la foto
-        if (FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl() != null) {
-            Glide.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).circleCrop().into(binding.imagenPerfil);
+        if (userphoto != null) {
+            Glide.with(this).load(userphoto).circleCrop().into(binding.imagenPerfil);
         } else {
             binding.imagenPerfil.setImageResource(R.drawable.ic_baseline_face_24);
         }
 
-        binding.nombrePerfil.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        binding.emailPerfil.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        binding.nombrePerfil.setText(username);
+        binding.emailPerfil.setText(usermail);
 
 
         //System.out.println("post tras metodo "+cantidadPosts);
@@ -57,15 +68,17 @@ public class ProfileFragment extends AppFragment {
         //reset
         cantidadPosts = 0;
         cantidadFavs = 0;
+
+
     }
 
 
     Query getPersonalQuery() {
-        return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("authorName", FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("authorName", username);
     }
 
     Query getFavsQuery() {
-        return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("likes." + FirebaseAuth.getInstance().getUid(), true);
+        return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("likes." + useruid, true);
     }
 
     private void getCantidad() {

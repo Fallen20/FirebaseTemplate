@@ -21,6 +21,7 @@ public class DetailPostFragment extends AppFragment {
     FragmentDetailPostBinding binding;
     private Post post;
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class DetailPostFragment extends AppFragment {
                 binding.autorDetails.setImageResource(R.drawable.ic_baseline_face_24);
             }
 
-
+            //fav
             binding.favoritoDet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
