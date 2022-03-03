@@ -40,19 +40,20 @@ public class DetailPostFragment extends AppFragment {
         postid = DetailPostFragmentArgs.fromBundle(getArguments()).getPostid();
 
 
-        db.collection("posts").document(postid).get().addOnSuccessListener(documentSnapshot -> {
-            post = documentSnapshot.toObject(Post.class);
+        db.collection("posts").document(postid).addSnapshotListener((documentSnapshot,error) -> {
+            post = documentSnapshot.toObject(Post.class);  // true
 
+            binding.cantFavs.setText(String.valueOf(post.getLikes().size()));
             binding.descDetails.setText(post.getContent());
             binding.usuarioDetails.setText(post.getAuthorName());
 
-            //num fav
-            if (post.getLikes() == null || post.getLikes().isEmpty()) {
-                binding.cantFavs.setText("0");
-            } else {
-                String valor= String.valueOf(post.getLikes().size());
-                binding.cantFavs.setText(valor);
-            }
+//            //num fav
+//            if (post.getLikes() == null || post.getLikes().isEmpty()) {
+//                binding.cantFavs.setText("0");
+//            } else {
+//                String valor= String.valueOf(post.getLikes().size());
+//                binding.cantFavs.setText(valor);
+//            }
 
             //imagen post
             if (post.getUrlImagenPost() != null) {
@@ -87,7 +88,7 @@ public class DetailPostFragment extends AppFragment {
                             .update("likes."+ FirebaseAuth.getInstance().getCurrentUser().getUid(),
                                     !post.getLikes().containsKey(auth.getUid()) ? true : FieldValue.delete());
 
-                    recuperarLikes();
+
 
                 }
             });
@@ -98,24 +99,5 @@ public class DetailPostFragment extends AppFragment {
 
 
         });
-
-
-
     }
-
-    private void recuperarLikes() {
-        db.collection("posts").document(postid).get().addOnSuccessListener(documentSnapshot1 -> {
-            //no actualiza al quitar
-            binding.cantFavs.setText(String.valueOf(documentSnapshot1.toObject(Post.class).getLikes().size()));
-        });
-    }
-
-    Query setQuery(){
-        return db.collection("posts");
-    }
-
-
-
-
-
 }
