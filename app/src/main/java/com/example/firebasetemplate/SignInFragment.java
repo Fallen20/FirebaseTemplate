@@ -116,6 +116,19 @@ public class SignInFragment extends AppFragment {
         FirebaseAuth.getInstance().signInWithCredential(GoogleAuthProvider.getCredential(account.getIdToken(), null))
                 .addOnCompleteListener(requireActivity(), task -> {//cuando acabe de ponerse en la firebase
                     if (task.isSuccessful()) {
+                        //TODO
+
+                        db.collection("users").document(account.getEmail()).set(
+                                new User(
+                                        account.getId(),//todo
+                                        account.getDisplayName(),
+                                        account.getEmail(),
+                                        account.getPhotoUrl().toString()
+                                )
+                        );
+
+
+
                         navController.navigate(R.id.action_signInFragment_to_postsHomeFragment);
                     } else {
                         binding.signInProgressBar.setVisibility(View.GONE);

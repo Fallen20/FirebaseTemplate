@@ -69,24 +69,18 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
         holder.binding.autorFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "foto", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, post.getAuthorIcono(), Toast.LENGTH_SHORT).show();
                 //navigate al profile con los datos son los de este usuario
 
 
-                //no encuentra esto
-                /*ActionToProfileFragment action2 = actionToProfileFragment();
+
+                NavGraphDirections.ActionToProfileFragment action2= NavGraphDirections.actionToProfileFragment();
+                //ActionToProfileFragment action2= actionToProfileFragment();
 
                 //pasar datos
-                action2.setUseremail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                action2.setUsername(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                action2.setUseruuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                action2.setUseremail(post.getAuthorEmail());
+                navController.navigate(action2);
 
-                if (FirebaseAuth.getInstance().getCurrentUser().getEmail()!=null){
-                    action2.setUserphoto(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                }
-
-                navController.navigate(action);
-*/
             }
         });
 

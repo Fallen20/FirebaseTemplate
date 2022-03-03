@@ -8,18 +8,23 @@ import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.firebasetemplate.databinding.FragmentDetailPostBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 
 public class DetailPostFragment extends AppFragment {
 
     FragmentDetailPostBinding binding;
     private Post post;
+    private Post post2;
+    String postid;
 
 
     @Override
@@ -32,7 +37,7 @@ public class DetailPostFragment extends AppFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String postid = DetailPostFragmentArgs.fromBundle(getArguments()).getPostid();
+        postid = DetailPostFragmentArgs.fromBundle(getArguments()).getPostid();
 
 
         db.collection("posts").document(postid).get().addOnSuccessListener(documentSnapshot -> {
@@ -41,7 +46,7 @@ public class DetailPostFragment extends AppFragment {
             binding.descDetails.setText(post.getContent());
             binding.usuarioDetails.setText(post.getAuthorName());
 
-            //icono fav
+            //num fav
             if (post.getLikes() == null || post.getLikes().isEmpty()) {
                 binding.cantFavs.setText("0");
             } else {
@@ -63,6 +68,13 @@ public class DetailPostFragment extends AppFragment {
                 binding.autorDetails.setImageResource(R.drawable.ic_baseline_face_24);
             }
 
+            //icono favs
+            if(post.getLikes()!=null){
+                //si el user tiene el like en el hashmap
+                binding.favoritoDet.setChecked(post.getLikes().containsKey(FirebaseAuth.getInstance().getUid()));
+            }
+
+
             //fav
             binding.favoritoDet.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,25 +83,39 @@ public class DetailPostFragment extends AppFragment {
 
                     //cuando haces click, guardas que ese usuario le ha dado like
                     FirebaseFirestore.getInstance().collection("posts")
-                            .document(post.getId())//recuperas el id
+                            .document(postid)//recuperas el id
                             .update("likes."+ FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                                    !post.getLikes().containsKey(auth.getUid()) ? true : FieldValue.delete());//campo a actualizar y con que valor
-                    //si el hashmpa no tiene ese like, se lo pones.
-                    //sino lo tiene, lo eliminas del hashmap
+                                    !post.getLikes().containsKey(auth.getUid()) ? true : FieldValue.delete());
+
+                    recuperarLikes();
+
                 }
             });
 
-            if(post.getLikes()!=null){
-                //si el user tiene el like en el hashmap
-                binding.favoritoDet.setChecked(post.getLikes().containsKey(FirebaseAuth.getInstance().getUid()));
-            }
 
-            //hacer lo mismo con las otras actividades
-            //ver como actualizar al momento
-            //porque se pone fav en esta actividad pero en la de atras ya no --
+
+            //actualizar los favs al momento
+
 
         });
+
+
+
     }
+
+    private void recuperarLikes() {
+        db.collection("posts").document(postid).get().addOnSuccessListener(documentSnapshot1 -> {
+            //no actualiza al quitar
+            binding.cantFavs.setText(String.valueOf(documentSnapshot1.toObject(Post.class).getLikes().size()));
+        });
+    }
+
+    Query setQuery(){
+        return db.collection("posts");
+    }
+
+
+
 
 
 }

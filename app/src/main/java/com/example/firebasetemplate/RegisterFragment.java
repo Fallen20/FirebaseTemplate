@@ -32,6 +32,7 @@ import java.util.UUID;
 public class RegisterFragment extends AppFragment {
     private FragmentRegisterBinding binding;
     private Uri uriImagen;
+    private String uidUser;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,10 +86,21 @@ public class RegisterFragment extends AppFragment {
 
                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                 .setDisplayName(binding.usernameEditText.getText().toString())
+                                                .setPhotoUri(null)
                                                 .build();
 
+                                        uidUser=user.getUid();
                                         user.updateProfile(profileUpdates);
 
+                                        //guardar
+                                        db.collection("users").document(binding.emailEditText.getText().toString()).set(
+                                                new User(
+                                                        uidUser,
+                                                        binding.usernameEditText.getText().toString(),
+                                                        binding.emailEditText.getText().toString(),
+                                                        null
+                                                )
+                                        );
 
 
                                     }
@@ -97,19 +109,33 @@ public class RegisterFragment extends AppFragment {
                                         FirebaseStorage.getInstance().getReference("/iconos/"+ UUID.randomUUID()+".jpg")
                                                 .putFile(uriImagen)
                                                 .continueWithTask(task2 -> task2.getResult().getStorage().getDownloadUrl())
-                                                .addOnSuccessListener(url->{
+                                                .addOnSuccessListener(url -> {
                                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                                                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                             .setDisplayName(binding.usernameEditText.getText().toString())
-                                                            .setPhotoUri(uriImagen)
+                                                            .setPhotoUri(url)
                                                             .build();
 
+                                                    uidUser=user.getUid();
                                                     user.updateProfile(profileUpdates);
 
+                                                    //guardar
+                                                    db.collection("users").document(binding.emailEditText.getText().toString()).set(
+                                                            new User(
+                                                                    uidUser,
+                                                                    binding.usernameEditText.getText().toString(),
+                                                                    binding.emailEditText.getText().toString(),
+                                                                    url.toString()//ERROR
+                                                            )
+                                                    );
 
                                                 });
+
+
                                     }
+
+
 
                                     navController.navigate(R.id.action_registerFragment_to_postsHomeFragment);
 
@@ -125,6 +151,10 @@ public class RegisterFragment extends AppFragment {
 
 
         });
+
+    }
+
+    void updatePorfile(){
 
     }
 

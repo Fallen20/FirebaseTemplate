@@ -14,11 +14,11 @@
         <entry key="app/src/main/res/drawable/like.xml" value="0.2905" />
         <entry key="app/src/main/res/drawable/like_off.xml" value="0.19" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.14" />
-        <entry key="app/src/main/res/layout/fragment_detail_post.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_detail_post.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_new_post.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_posts.xml" value="0.2864583333333333" />
         <entry key="app/src/main/res/layout/fragment_posts_home.xml" value="0.35625" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_sign_out.xml" value="0.35625" />

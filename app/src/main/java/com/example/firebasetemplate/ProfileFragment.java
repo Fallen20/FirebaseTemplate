@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.firebasetemplate.databinding.FragmentProfileBinding;
@@ -23,10 +24,8 @@ public class ProfileFragment extends AppFragment {
     public static int cantidadFavs = 0;
     private boolean post, fav;
 
-    String username;
     String usermail;
-    String userphoto;
-    String useruid;
+    User user;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,25 +36,51 @@ public class ProfileFragment extends AppFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        username=ProfileFragmentArgs.fromBundle(getArguments()).getUsername();
+
         usermail=ProfileFragmentArgs.fromBundle(getArguments()).getUseremail();
-        userphoto=ProfileFragmentArgs.fromBundle(getArguments()).getUserphoto();
-        useruid=ProfileFragmentArgs.fromBundle(getArguments()).getUseruuid();
+
+
+        if(usermail!=null && !usermail.equals("abcd")){
+            db.collection("users").document(usermail).get().addOnSuccessListener( documentSnapshot -> {
+                user = documentSnapshot.toObject(User.class);
+
+                if (user.getPhotoUser() != null) {
+                    Glide.with(this).load(user.getPhotoUser()).circleCrop().into(binding.imagenPerfil);
+                } else {
+                    binding.imagenPerfil.setImageResource(R.drawable.ic_baseline_face_24);
+                }
+
+                binding.nombrePerfil.setText(usermail);
+                binding.emailPerfil.setText(usermail);
+
+
+                getCantidad();//sino no accede bien o algo
+            });
+
+            //System.out.println(user.getUsername());
+            //cargar la foto
+
+        }
+        else if (usermail.equals("abcd")){
+            //cargar la foto
+            if (auth.getCurrentUser().getPhotoUrl() != null) {
+                Glide.with(this).load(auth.getCurrentUser().getPhotoUrl()).circleCrop().into(binding.imagenPerfil);
+            } else {
+                binding.imagenPerfil.setImageResource(R.drawable.ic_baseline_face_24);
+            }
+
+            binding.nombrePerfil.setText(auth.getCurrentUser().getDisplayName());
+            binding.emailPerfil.setText(auth.getCurrentUser().getEmail());
+
+            getCantidad();
+        }
+
 
 
         //System.out.println("accendiento a los metodos desde el onview");
-        getCantidad();
 
 
-        //cargar la foto
-        if (userphoto != null) {
-            Glide.with(this).load(userphoto).circleCrop().into(binding.imagenPerfil);
-        } else {
-            binding.imagenPerfil.setImageResource(R.drawable.ic_baseline_face_24);
-        }
 
-        binding.nombrePerfil.setText(username);
-        binding.emailPerfil.setText(usermail);
 
 
         //System.out.println("post tras metodo "+cantidadPosts);
@@ -74,11 +99,24 @@ public class ProfileFragment extends AppFragment {
 
 
     Query getPersonalQuery() {
-        return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("authorName", username);
+        if(usermail!=null && !usermail.equals("abcd")){
+            return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("authorName", user.getUsername());
+        }
+        else if(usermail.equals("abcd")) {
+            return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("authorName", auth.getCurrentUser().getDisplayName());
+        }
+
+        return null;
     }
 
     Query getFavsQuery() {
-        return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("likes." + useruid, true);
+        if(usermail!=null && !usermail.equals("abcd")){//TODO
+            return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("likes." + user.getIdUser(), true);
+        }
+        else if(usermail.equals("abcd")){//el placeholder
+            return FirebaseFirestore.getInstance().collection("posts").whereEqualTo("likes." + auth.getCurrentUser().getUid(), true);
+        }
+        return null;
     }
 
     private void getCantidad() {
