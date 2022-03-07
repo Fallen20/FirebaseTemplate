@@ -14,17 +14,24 @@ import com.bumptech.glide.Glide;
 import com.example.firebasetemplate.databinding.FragmentDetailPostBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DetailPostFragment extends AppFragment {
 
     FragmentDetailPostBinding binding;
     private Post post;
-    private Post post2;
     String postid;
+    private final List<Comment> commentList=new ArrayList<>();
+    private AdapterComments adapterComments;
 
 
     @Override
@@ -39,8 +46,11 @@ public class DetailPostFragment extends AppFragment {
 
         postid = DetailPostFragmentArgs.fromBundle(getArguments()).getPostid();
 
+        adapterComments = new AdapterComments(getContext(), commentList, navController);
+        binding.recyclerDetails.setAdapter(adapterComments);
 
         db.collection("posts").document(postid).addSnapshotListener((documentSnapshot,error) -> {
+
             post = documentSnapshot.toObject(Post.class);  // true
 
             binding.cantFavs.setText(String.valueOf(post.getLikes().size()));
@@ -69,6 +79,12 @@ public class DetailPostFragment extends AppFragment {
                 binding.autorDetails.setImageResource(R.drawable.ic_baseline_face_24);
             }
 
+            if (auth.getCurrentUser().getPhotoUrl() != null) {
+                Glide.with(this).load(post.getAuthorIcono()).into(binding.iconoAddComment);
+            } else {
+                binding.iconoAddComment.setImageResource(R.drawable.ic_baseline_face_24);
+            }
+
             //icono favs
             if(post.getLikes()!=null){
                 //si el user tiene el like en el hashmap
@@ -95,9 +111,76 @@ public class DetailPostFragment extends AppFragment {
 
 
 
-            //actualizar los favs al momento
+            //check added comments
 
+
+            checkComments();
+
+
+            //add comment
+
+            binding.buttonAddComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.buttonAddComment.setEnabled(false);
+                    uploadComment();
+
+                }
+            });
 
         });
+    }
+
+    private void checkComments() {
+        //sacar comments
+        db.collection("posts").document(postid).collection("comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                commentList.clear();
+
+                for(DocumentSnapshot a:value){
+                    Comment comment = a.toObject(Comment.class);
+                    commentList.add(comment);
+                    System.out.println("addding " + comment.getContenido());
+                }
+
+                System.out.println("notifingggggg");
+                adapterComments.notifyDataSetChanged();
+                System.out.println("notifiedddddd");
+
+/*
+                if(commentList.size()==0){
+                    binding.recyclerDetails.setVisibility(View.GONE);
+                }
+
+ */
+//                else{
+//                    binding.recyclerDetails.setVisibility(View.VISIBLE);
+//                    adapterComments=new AdapterComments(getContext(), commentList, navController);
+//                    binding.recyclerDetails.setAdapter(adapterComments);
+//                }
+            }
+        });
+    }
+
+    private void uploadComment() {
+        Comment comment=new Comment();
+        comment.setContenido(binding.inputComment.getText().toString().trim());
+        comment.setNombreUsuario(auth.getCurrentUser().getDisplayName());
+
+        if (auth.getCurrentUser().getPhotoUrl() != null) {
+            comment.setPhoto(auth.getCurrentUser().getPhotoUrl().toString());
+        } else {
+            comment.setPhoto(null);
+        }
+
+
+        FirebaseFirestore.getInstance().collection("posts").document(postid).collection("comments").add(comment)
+                .addOnCompleteListener(task -> {
+                    binding.buttonAddComment.setEnabled(true);
+                    binding.inputComment.setText("");
+                    binding.inputComment.setHint(R.string.addComment);
+                });//add es una fila
+        adapterComments.notifyDataSetChanged();
     }
 }

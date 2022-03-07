@@ -7,6 +7,10 @@
     <string name="goRegister">Don\'t have an account? Register.</string>
     <string name="proceed">Enter your email to proceed</string>
     <string name="welcome">Welcome to FirebaseTemplate password application</string>
+
     <string name="cantidadPost">Cantidad de post: </string>
     <string name="cantidadFavs">Cantidad de favoritos: </string>
+
+    <string name="addComment">Add a comment</string>
+    <string name="uploadPalabra">Upload</string>
 </resources>

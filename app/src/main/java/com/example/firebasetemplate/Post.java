@@ -5,9 +5,6 @@ import java.util.HashMap;
 public class Post {
 
     private String id;
-
-
-
     private String content;
     private String authorName;
     private String authorEmail;
