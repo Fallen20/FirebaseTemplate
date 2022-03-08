@@ -4,140 +4,150 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="10dp"
     tools:context=".DetailPostFragment">
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/relativeGrandeDet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/relativeGrandeDet"
+            android:id="@+id/relative1Det"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="10dp">
 
-            <RelativeLayout
-                android:id="@+id/relative1Det"
+            <ImageView
+                android:id="@+id/imageDetails"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/descDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/imageDetails"
+                android:text="placeholder donde va la descripcion que has puesto en el post y esas cosas" />
+        </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/imageDetails"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:src="@drawable/ic_launcher_background" />
+        <RelativeLayout
+            android:id="@+id/relative2Det"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relative1Det">
 
-                <TextView
-                    android:id="@+id/descDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_toRightOf="@id/imageDetails"
-                    android:text="placeholder donde va la descripcion que has puesto en el post y esas cosas" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relative2Det"
-                android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardDet"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/relative1Det">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardDet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="50dp">
-
-                    <ImageView
-                        android:id="@+id/autorDetails"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/ic_baseline_face_24" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/usuarioDetails"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_toRightOf="@id/cardDet"
-                    android:text="TextView" />
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="70dp"
-                    android:layout_toRightOf="@id/usuarioDetails">
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/favoritoDet"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:button="@drawable/like"
-                        android:paddingLeft="8sp"
-                        app:useMaterialThemeColors="false" />
-
-                    <TextView
-                        android:id="@+id/cantFavs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:layout_toRightOf="@id/favoritoDet"
-                        android:text="TextView" />
-
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerDetails"
-                android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_height="330dp"
-                android:layout_below="@id/relative2Det" />
-
-
-            <RelativeLayout
-                android:id="@+id/reltiveAddComment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/recyclerDetails">
+                app:cardCornerRadius="50dp">
 
                 <ImageView
-                    android:id="@+id/iconoAddComment"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:id="@+id/autorDetails"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:src="@drawable/ic_baseline_face_24" />
+            </androidx.cardview.widget.CardView>
 
-                <EditText
-                    android:id="@+id/inputComment"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/iconoAddComment"
-                    android:ems="10"
-                    android:hint="@string/addComment"
-                    android:inputType="textPersonName"
-                    android:minHeight="48dp" />
+            <TextView
+                android:id="@+id/usuarioDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_toRightOf="@id/cardDet"
+                android:text="TextView" />
 
-                <Button
-                    android:id="@+id/buttonAddComment"
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="70dp"
+                android:layout_toRightOf="@id/usuarioDetails">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/favoritoDet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/inputComment"
-                    android:text="@string/uploadPalabra" />
+                    android:layout_marginTop="20dp"
+                    android:button="@drawable/like"
+                    android:paddingLeft="8sp"
+                    app:useMaterialThemeColors="false" />
 
+                <TextView
+                    android:id="@+id/cantFavs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_toRightOf="@id/favoritoDet"
+                    android:text="TextView" />
 
             </RelativeLayout>
 
         </RelativeLayout>
-    </ScrollView>
+
+
+        <TextView
+            android:id="@+id/commentsPalabra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relative2Det"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/commentsPalabra"
+            android:textColor="#000000"
+            android:textStyle="bold|italic" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerDetails"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/commentsPalabra"
+            android:layout_marginBottom="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <RelativeLayout
+            android:id="@+id/reltiveAddComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recyclerDetails">
+
+            <ImageView
+                android:id="@+id/iconoAddComment"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_baseline_face_24" />
+
+            <EditText
+                android:id="@+id/inputComment"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iconoAddComment"
+                android:ems="10"
+                android:hint="@string/addComment"
+                android:inputType="textPersonName"
+                android:minHeight="48dp" />
+
+            <ImageView
+                android:id="@+id/buttonAddComment"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="40dp"
+                android:layout_toRightOf="@id/inputComment"
+                android:src="@drawable/num_comment_icon" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </FrameLayout>

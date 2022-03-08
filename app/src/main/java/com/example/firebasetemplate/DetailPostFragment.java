@@ -118,7 +118,6 @@ public class DetailPostFragment extends AppFragment {
 
 
             //add comment
-
             binding.buttonAddComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -141,12 +140,9 @@ public class DetailPostFragment extends AppFragment {
                 for(DocumentSnapshot a:value){
                     Comment comment = a.toObject(Comment.class);
                     commentList.add(comment);
-                    System.out.println("addding " + comment.getContenido());
                 }
 
-                System.out.println("notifingggggg");
                 adapterComments.notifyDataSetChanged();
-                System.out.println("notifiedddddd");
 
 /*
                 if(commentList.size()==0){

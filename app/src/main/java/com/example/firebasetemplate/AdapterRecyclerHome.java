@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.firebasetemplate.databinding.ViewholderPostBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +56,7 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
 
         //foto post
         if(post.getUrlImagenPost()!=null){
-            Glide.with(context).load(post.getUrlImagenPost()).into(holder.binding.imagen);//igual que picaso
+            Glide.with(context).load(post.getUrlImagenPost()).centerCrop().into(holder.binding.imagen);//igual que picaso
             holder.binding.imagen.setVisibility(View.VISIBLE);
         }
         else{
@@ -60,7 +65,7 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
 
         //icono
         if(post.getAuthorIcono() != null && !post.getAuthorIcono().isEmpty()){
-            Glide.with(context).load(postList.get(position).getAuthorIcono()).into(holder.binding.autorFoto);
+            Glide.with(context).load(postList.get(position).getAuthorIcono()).centerCrop().into(holder.binding.autorFoto);
         }
         else{
             holder.binding.autorFoto.setImageResource(R.drawable.ic_baseline_face_24);
@@ -101,12 +106,14 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
             }
         });
 
+        holder.binding.cantidadFavsPost.setText(String.valueOf(post.getLikes().size()));
+
         if(postList.get(position).getLikes()!=null){
             //si el user tiene el like en el hashmap
             holder.binding.favorito.setChecked(postList.get(position).getLikes().containsKey(FirebaseAuth.getInstance().getUid()));
         }
 
-        //fondo
+        //a details
         holder.binding.cardViewholder.setOnClickListener(v -> {
             //aqui se ha de hacer que pueda venir de otras actividades
 
@@ -117,7 +124,22 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
 
         });
 
+
+        //cantidad comments
+        FirebaseFirestore.getInstance().collection("posts").document(post.getId()).collection("comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                int cantidad=0;
+                for(DocumentSnapshot a:value){cantidad++;}
+
+                holder.binding.cantidadCommentsPost.setText(String.valueOf(cantidad));
+            }
+
+        });
+
+
     }
+
 
     @Override
     public int getItemCount() {

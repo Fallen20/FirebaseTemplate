@@ -13,4 +13,5 @@
 
     <string name="addComment">Add a comment</string>
     <string name="uploadPalabra">Upload</string>
+    <string name="commentsPalabra">Comments:</string>
 </resources>

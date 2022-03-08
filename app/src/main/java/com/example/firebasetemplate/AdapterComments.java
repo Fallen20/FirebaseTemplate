@@ -45,7 +45,7 @@ public class AdapterComments extends RecyclerView.Adapter<AdapterComments.MyView
         holder.binding.nameCommenter.setText(commentList.get(position).getNombreUsuario());
 
         if(commentList.get(position).getPhoto()!=null){
-            Glide.with(context).load(commentList.get(position).getPhoto()).into(holder.binding.iconAuthorComment);
+            Glide.with(context).load(commentList.get(position).getPhoto()).centerCrop().into(holder.binding.iconAuthorComment);
         }
         else{
             holder.binding.iconAuthorComment.setImageResource(R.drawable.ic_baseline_face_24);

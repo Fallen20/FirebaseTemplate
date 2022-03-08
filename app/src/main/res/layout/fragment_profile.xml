@@ -64,8 +64,7 @@
             android:id="@+id/relativeCantidad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/emailPerfil"
-            android:visibility="invisible">
+            android:layout_below="@id/emailPerfil">
 
             <TextView
                 android:id="@+id/cantidadTxt"

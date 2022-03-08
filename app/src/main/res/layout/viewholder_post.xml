@@ -48,18 +48,50 @@
 
             <ImageView
                 android:id="@+id/imagen"
-                android:layout_width="196dp"
+                android:layout_width="290dp"
                 android:layout_height="196dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:adjustViewBounds="true" />
 
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/favorito"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/like"
-                android:paddingLeft="8sp"
-                app:useMaterialThemeColors="false" />
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/favorito"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:button="@drawable/like"
+                    android:paddingLeft="8sp"
+                    app:useMaterialThemeColors="false" />
+
+                <TextView
+                    android:id="@+id/cantidadFavsPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/favorito" />
+
+                <ImageView
+                    android:id="@+id/commIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="80dp"
+                    android:layout_toRightOf="@id/favorito"
+                    app:srcCompat="@drawable/num_comment_icon" />
+
+                <TextView
+                    android:id="@+id/cantidadCommentsPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/commIcon" />
+            </RelativeLayout>
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
