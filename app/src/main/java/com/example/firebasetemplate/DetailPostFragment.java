@@ -1,5 +1,7 @@
 package com.example.firebasetemplate;
 
+import static com.example.firebasetemplate.NavigationDirections.actionToDetailProfileFragment;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,7 @@ public class DetailPostFragment extends AppFragment {
     FragmentDetailPostBinding binding;
     private Post post;
     String postid;
+    String email;
     private final List<Comment> commentList=new ArrayList<>();
     private AdapterComments adapterComments;
 
@@ -46,46 +49,44 @@ public class DetailPostFragment extends AppFragment {
 
         postid = DetailPostFragmentArgs.fromBundle(getArguments()).getPostid();
 
-        adapterComments = new AdapterComments(getContext(), commentList, navController);
+
+        adapterComments = new AdapterComments(getContext(), commentList, navController,null);
         binding.recyclerDetails.setAdapter(adapterComments);
 
-        db.collection("posts").document(postid).addSnapshotListener((documentSnapshot,error) -> {
 
-            post = documentSnapshot.toObject(Post.class);  // true
+        db.collection("posts").document(postid).addSnapshotListener((documentSnapshot,error) -> {
+            post = documentSnapshot.toObject(Post.class);
+
 
             binding.cantFavs.setText(String.valueOf(post.getLikes().size()));
             binding.descDetails.setText(post.getContent());
             binding.usuarioDetails.setText(post.getAuthorName());
 
-//            //num fav
-//            if (post.getLikes() == null || post.getLikes().isEmpty()) {
-//                binding.cantFavs.setText("0");
-//            } else {
-//                String valor= String.valueOf(post.getLikes().size());
-//                binding.cantFavs.setText(valor);
-//            }
-
             //imagen post
             if (post.getUrlImagenPost() != null) {
-                Glide.with(this).load(post.getUrlImagenPost()).into(binding.imageDetails);
+                Glide.with(this).load(post.getUrlImagenPost()).centerCrop().into(binding.imageDetails);
             } else {
                 binding.imageDetails.setVisibility(View.GONE);
             }
 
-            //icono
+            //icono crador del post
             if (post.getAuthorIcono() != null) {
-                Glide.with(this).load(post.getAuthorIcono()).into(binding.autorDetails);
+                Glide.with(this).load(post.getAuthorIcono()).centerCrop().into(binding.autorDetails);
             } else {
                 binding.autorDetails.setImageResource(R.drawable.ic_baseline_face_24);
             }
 
+            //icono de la persona que comenta
             if (auth.getCurrentUser().getPhotoUrl() != null) {
-                Glide.with(this).load(post.getAuthorIcono()).into(binding.iconoAddComment);
+                Glide.with(this).load(auth.getCurrentUser().getPhotoUrl()).centerCrop().into(binding.iconoAddComment);
             } else {
                 binding.iconoAddComment.setImageResource(R.drawable.ic_baseline_face_24);
             }
 
-            //icono favs
+
+
+
+            //icono favs post
             if(post.getLikes()!=null){
                 //si el user tiene el like en el hashmap
                 binding.favoritoDet.setChecked(post.getLikes().containsKey(FirebaseAuth.getInstance().getUid()));
@@ -128,6 +129,17 @@ public class DetailPostFragment extends AppFragment {
             });
 
         });
+
+        binding.autorDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationDirections.ActionToDetailProfileFragment action2= actionToDetailProfileFragment();
+
+                //pasar datos
+                action2.setUsermail(post.getAuthorEmail());
+                navController.navigate(action2);
+            }
+        });
     }
 
     private void checkComments() {
@@ -139,22 +151,12 @@ public class DetailPostFragment extends AppFragment {
 
                 for(DocumentSnapshot a:value){
                     Comment comment = a.toObject(Comment.class);
+                    comment.setCommentid(a.getId());
                     commentList.add(comment);
                 }
 
                 adapterComments.notifyDataSetChanged();
 
-/*
-                if(commentList.size()==0){
-                    binding.recyclerDetails.setVisibility(View.GONE);
-                }
-
- */
-//                else{
-//                    binding.recyclerDetails.setVisibility(View.VISIBLE);
-//                    adapterComments=new AdapterComments(getContext(), commentList, navController);
-//                    binding.recyclerDetails.setAdapter(adapterComments);
-//                }
             }
         });
     }
@@ -163,6 +165,8 @@ public class DetailPostFragment extends AppFragment {
         Comment comment=new Comment();
         comment.setContenido(binding.inputComment.getText().toString().trim());
         comment.setNombreUsuario(auth.getCurrentUser().getDisplayName());
+        comment.setEmail(auth.getCurrentUser().getEmail());
+        comment.setPostid(postid);
 
         if (auth.getCurrentUser().getPhotoUrl() != null) {
             comment.setPhoto(auth.getCurrentUser().getPhotoUrl().toString());

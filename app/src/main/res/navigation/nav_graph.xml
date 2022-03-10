@@ -113,5 +113,21 @@
         <action
             android:id="@+id/action_to_detailFragment"
             app:destination="@id/detailFragment" />
+
+
+        <fragment
+            android:id="@+id/detailProfileFragment"
+            android:name="com.example.firebasetemplate.DetailedProfile"
+            android:label="Detail Profile post"
+            tools:layout="@layout/fragment_detailed_profile">
+            <argument
+                android:name="usermail"
+                app:argType="string"
+                android:defaultValue="abcd" />
+
+        </fragment>
+        <action
+            android:id="@+id/action_to_detailProfileFragment"
+            app:destination="@id/detailProfileFragment" />
     </navigation>
 </navigation>

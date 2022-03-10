@@ -32,7 +32,7 @@ public class PostsHomeFragment extends AppFragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.fab.setOnClickListener(v -> navController.navigate(R.id.newPostFragment));
-        adapterRecyclerHome=new AdapterRecyclerHome(requireContext(), navController, postArrayList);
+        adapterRecyclerHome=new AdapterRecyclerHome(requireContext(), navController, postArrayList, auth.getCurrentUser().getEmail());
 
         binding.postsRecyclerView.setAdapter(adapterRecyclerHome);//al principio estara vacio porque se llena abajo, pero al cabo de unos segundos se llena
 

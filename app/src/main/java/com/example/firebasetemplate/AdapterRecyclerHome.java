@@ -33,13 +33,15 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
     private Context context;
     private List<Post> postList =new ArrayList<>();
     NavController navController;
+    private String usermail;
 
     public AdapterRecyclerHome(){}
 
-    public AdapterRecyclerHome(Context context, NavController navController, List<Post> postList) {
+    public AdapterRecyclerHome(Context context, NavController navController, List<Post> postList,String usermail) {
         this.context = context;
         this.postList = postList;
         this.navController = navController;
+        this.usermail=usermail;
     }
 
     @NonNull
@@ -79,11 +81,11 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
 
 
 
-                NavGraphDirections.ActionToProfileFragment action2= NavGraphDirections.actionToProfileFragment();
+                ActionToDetailProfileFragment action2= actionToDetailProfileFragment();
                 //ActionToProfileFragment action2= actionToProfileFragment();
 
                 //pasar datos
-                action2.setUseremail(post.getAuthorEmail());
+                action2.setUsermail(post.getAuthorEmail());
                 navController.navigate(action2);
 
             }
@@ -118,6 +120,7 @@ public class AdapterRecyclerHome extends RecyclerView.Adapter<AdapterRecyclerHom
             //aqui se ha de hacer que pueda venir de otras actividades
 
                 ActionToDetailFragment action = actionToDetailFragment();
+
                 action.setPostid(post.getId());//le enviamos el post id y asi lo recuperamos
                 navController.navigate(action);
 
