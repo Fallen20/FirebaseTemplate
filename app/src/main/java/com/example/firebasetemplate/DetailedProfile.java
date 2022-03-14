@@ -54,7 +54,6 @@ public class DetailedProfile extends AppFragment {
                 }
 
                 binding.nombrePerfil2.setText(user.getUsername());
-                binding.emailPerfil2.setText(usermail);
 
 
                 getCantidad();

@@ -54,21 +54,11 @@
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/emailPerfil2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30sp"
-                android:gravity="center"
-                android:textColor="#597A98"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
             <LinearLayout
                 android:id="@+id/postLinear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/emailPerfil2"
+                android:layout_below="@id/nombrePerfil2"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
